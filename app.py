@@ -155,5 +155,28 @@ def certificadosPowerBI():
     })
 
 
+# Consulta 9
+@api.route("/api/aprendicesEstado/<int:ficha>/<estado>")
+def aprendicesEstado(ficha, estado):
+
+    if estado.lower() == "formación":
+        estado = "Formacion"
+
+    resultado = aprendices.find({
+        "FICHA": ficha,
+        "ESTADO_APRENDIZ": estado.capitalize()
+    }, {
+        "_id": 0,
+        "FICHA": 1,
+        "PROGRAMA": 1,
+        "NOMBRE": 1,
+        "PRIMER_APELLIDO": 1,
+        "SEGUNDO_APELLIDO": 1,
+        "ESTADO_APRENDIZ": 1
+    })
+
+    return jsonify(list(resultado))
+
+
 if __name__ == "__main__":
     api.run(port=8000, debug=True)
