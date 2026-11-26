@@ -27,13 +27,14 @@ def inicio():
     })
 
 
-# Consulta 1.
+# Consulta 1
 @api.route("/api/cantidadAprendices")
 def cantidadAprendices():
     cantidad = aprendices.count_documents({})
     return jsonify({"CantidadAprendices": cantidad})
 
-# Consulta 2 
+
+# Consulta 2
 @api.route("/api/cantidadAprendices/<nivel>")
 def cantidadPorNivel(nivel):
     cantidad = aprendices.count_documents({
@@ -43,6 +44,19 @@ def cantidadPorNivel(nivel):
     return jsonify({
         "Nivel de formación": nivel.upper(),
         "CantidadAprendices": cantidad
+    })
+
+
+# Consulta 3
+@api.route("/api/programas/<nivel>")
+def programas(nivel):
+    resultado = aprendices.distinct("PROGRAMA", {
+        "NIVEL_DE_FORMACION": nivel.upper()
+    })
+
+    return jsonify({
+        "nivel de formación": nivel.upper(),
+        "programas": resultado
     })
 
 
