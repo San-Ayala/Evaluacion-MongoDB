@@ -80,5 +80,30 @@ def certificados(programa):
     })
 
 
+# Consulta 5
+@api.route("/api/porCertificar/<int:ficha>/<int:cantidad>")
+def porCertificar(ficha, cantidad):
+
+    if cantidad <= 0:
+        return jsonify({
+            "mensaje": "La cantidad debe ser mayor a cero"
+        }), 400
+
+    resultado = aprendices.find({
+        "FICHA": ficha,
+        "ESTADO_APRENDIZ": "Por certificar"
+    }, {
+        "_id": 0,
+        "FICHA": 1,
+        "PROGRAMA": 1,
+        "NUMERO_DOCUMENTO": 1,
+        "NOMBRE": 1,
+        "PRIMER_APELLIDO": 1,
+        "SEGUNDO_APELLIDO": 1
+    }).sort("PRIMER_APELLIDO", -1).limit(cantidad)
+
+    return jsonify(list(resultado))
+
+
 if __name__ == "__main__":
     api.run(port=8000, debug=True)
