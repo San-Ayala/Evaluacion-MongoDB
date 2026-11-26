@@ -158,10 +158,6 @@ def certificadosPowerBI():
 # Consulta 9
 @api.route("/api/aprendicesEstado/<int:ficha>/<estado>")
 def aprendicesEstado(ficha, estado):
-
-    if estado.lower() == "formación":
-        estado = "Formacion"
-
     resultado = aprendices.find({
         "FICHA": ficha,
         "ESTADO_APRENDIZ": estado.capitalize()
@@ -169,6 +165,7 @@ def aprendicesEstado(ficha, estado):
         "_id": 0,
         "FICHA": 1,
         "PROGRAMA": 1,
+        "NUMERO_DOCUMENTO": 1,
         "NOMBRE": 1,
         "PRIMER_APELLIDO": 1,
         "SEGUNDO_APELLIDO": 1,
@@ -176,6 +173,19 @@ def aprendicesEstado(ficha, estado):
     })
 
     return jsonify(list(resultado))
+
+
+# Consulta 10
+@api.route("/api/complementariaVirtual")
+def complementariaVirtual():
+    resultado = aprendices.distinct("PROGRAMA", {
+        "NIVEL_DE_FORMACION": "COMPLEMENTARIA VIRTUAL"
+    })
+
+    return jsonify({
+        "Nivel de formación": "COMPLEMENTARIA VIRTUAL",
+        "programas": resultado
+    })
 
 
 if __name__ == "__main__":
