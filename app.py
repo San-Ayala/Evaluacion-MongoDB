@@ -105,5 +105,23 @@ def porCertificar(ficha, cantidad):
     return jsonify(list(resultado))
 
 
+# Consulta 6
+@api.route("/api/terminadaUnificacion/<programa>")
+def terminadaUnificacion(programa):
+    resultado = aprendices.find({
+        "PROGRAMA": programa.upper(),
+        "ESTADO_FICHA": "Terminada por unificación"
+    }, {
+        "_id": 0,
+        "FICHA": 1,
+        "NUMERO_DOCUMENTO": 1,
+        "NOMBRE": 1,
+        "PRIMER_APELLIDO": 1,
+        "SEGUNDO_APELLIDO": 1
+    })
+
+    return jsonify(list(resultado))
+
+
 if __name__ == "__main__":
     api.run(port=8000, debug=True)
