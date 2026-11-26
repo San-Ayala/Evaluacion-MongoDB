@@ -123,5 +123,22 @@ def terminadaUnificacion(programa):
     return jsonify(list(resultado))
 
 
+# Consulta 7
+@api.route("/api/aprendicesPowerBI")
+def aprendicesPowerBI():
+    resultado = aprendices.find({
+        "PROGRAMA": "VISUALIZACION DE DATOS USANDO POWER BI"
+    }, {
+        "_id": 0,
+        "PROGRAMA": 1,
+        "FICHA": 1,
+        "NOMBRE": 1,
+        "PRIMER_APELLIDO": 1,
+        "SEGUNDO_APELLIDO": 1
+    })
+
+    return jsonify(list(resultado))
+
+
 if __name__ == "__main__":
     api.run(port=8000, debug=True)
