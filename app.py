@@ -60,5 +60,25 @@ def programas(nivel):
     })
 
 
+# Consulta 4
+@api.route("/api/certificados/<programa>")
+def certificados(programa):
+    resultado = aprendices.find({
+        "PROGRAMA": programa.upper(),
+        "ESTADO_APRENDIZ": "Certificado"
+    }, {
+        "_id": 0,
+        "FICHA": 1,
+        "NOMBRE": 1,
+        "PRIMER_APELLIDO": 1,
+        "SEGUNDO_APELLIDO": 1
+    })
+
+    return jsonify({
+        "Programa": programa.upper(),
+        "Aprendices_Certificados": list(resultado)
+    })
+
+
 if __name__ == "__main__":
     api.run(port=8000, debug=True)
